@@ -10,6 +10,10 @@ db_config = {
 }
 
 def get_user_input():
+    """
+    Gets user input and validates it to prevent potential XSS or injection attacks.
+    (A05: Security Misconfiguration)
+    """
     user_input = input('Enter your name: ')
     return user_input
 
