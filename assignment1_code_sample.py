@@ -31,7 +31,9 @@ def get_user_input():
 def send_email(to, subject, body):
     """
     Sends an email securely using smtplib instead of os.system.
-    (A03: Injection - Prevents command injection)
+    Using os.system for email could allow command injection if user input is included in the shell command.
+    This method ensures safer handling of email transmission.
+    (OWASP A03: Injection - Prevents command injection)
     """
     msg = MIMEText(body)
     msg['Subject'] = subject
