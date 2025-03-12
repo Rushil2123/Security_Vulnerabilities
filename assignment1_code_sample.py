@@ -2,6 +2,7 @@ import os
 import pymysql
 from urllib.request import urlopen
 
+# Use environment variables instead of hardcoded credentials (A02: Cryptographic Failures)
 db_config = {
     'host': 'mydatabase.com',
     'user': 'admin',
