@@ -58,7 +58,9 @@ def get_data():
 def save_to_db(data):
     """
     Saves data securely to the database using parameterized queries.
-    (A03: Injection - Prevents SQL Injection)
+    Using raw SQL queries with string concatenation allows SQL injection attacks.
+    Parameterized queries prevent attackers from injecting malicious SQL statements.
+    (OWASP A03: Injection - Prevents SQL Injection)
     """
     connection = pymysql.connect(**db_config)
     cursor = connection.cursor()
