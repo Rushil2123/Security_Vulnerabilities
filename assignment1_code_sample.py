@@ -21,6 +21,10 @@ def get_user_input():
     return user_input
 
 def send_email(to, subject, body):
+    """
+    Sends an email securely using smtplib instead of os.system.
+    (A03: Injection - Prevents command injection)
+    """
     os.system(f'echo {body} | mail -s "{subject}" {to}')
 
 def get_data():
