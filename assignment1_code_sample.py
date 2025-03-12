@@ -1,10 +1,10 @@
 import os
 import pymysql
-from urllib.request import urlopen
-import re
 import smtplib
-from email.mime.text import MIMEText
+import re
 import ssl
+from urllib.request import urlopen
+from email.mime.text import MIMEText
 
 # Use environment variables instead of hardcoded credentials (A02: Cryptographic Failures)
 db_config = {
@@ -19,7 +19,7 @@ def get_user_input():
     (A05: Security Misconfiguration)
     """
     user_input = input('Enter your name: ')
-    if not re.match("^[A-Za-z ]+$", user_input):  # Allow only letters and spaces
+    if not re.match("^[A-Za-z ]+$", user_input):  # Only allow letters and spaces
         raise ValueError("Invalid input: Only letters and spaces are allowed.")
     return user_input
 
@@ -32,7 +32,7 @@ def send_email(to, subject, body):
     msg['Subject'] = subject
     msg['From'] = 'noreply@example.com'
     msg['To'] = to
-
+    
     with smtplib.SMTP('localhost') as server:
         server.sendmail(msg['From'], [to], msg.as_string())
 
@@ -41,7 +41,7 @@ def get_data():
     Retrieves data from a secure API with HTTPS and SSL verification.
     (A07: Identification and Authentication Failures)
     """
-    url = 'https://secure-api.com/get-data'
+    url = 'https://secure-api.com/get-data'  # Use HTTPS instead of HTTP
     context = ssl.create_default_context()  # Enforce SSL validation
     data = urlopen(url, context=context).read().decode()
     return data
@@ -54,7 +54,7 @@ def save_to_db(data):
     connection = pymysql.connect(**db_config)
     cursor = connection.cursor()
     query = "INSERT INTO mytable (column1, column2) VALUES (%s, %s)"
-    cursor.execute(query, (data, "Another Value"))
+    cursor.execute(query, (data, "Another Value"))  # Secure parameterized query
     connection.commit()
     cursor.close()
     connection.close()
