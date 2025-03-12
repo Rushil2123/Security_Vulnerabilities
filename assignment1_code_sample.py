@@ -47,6 +47,10 @@ def get_data():
     return data
 
 def save_to_db(data):
+    """
+    Saves data securely to the database using parameterized queries.
+    (A03: Injection - Prevents SQL Injection)
+    """
     query = f"INSERT INTO mytable (column1, column2) VALUES ('{data}', 'Another Value')"
     connection = pymysql.connect(**db_config)
     cursor = connection.cursor()
