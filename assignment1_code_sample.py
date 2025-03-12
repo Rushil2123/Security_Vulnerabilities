@@ -4,6 +4,7 @@ from urllib.request import urlopen
 import re
 import smtplib
 from email.mime.text import MIMEText
+import ssl
 
 # Use environment variables instead of hardcoded credentials (A02: Cryptographic Failures)
 db_config = {
@@ -40,8 +41,9 @@ def get_data():
     Retrieves data from a secure API with HTTPS and SSL verification.
     (A07: Identification and Authentication Failures)
     """
-    url = 'http://insecure-api.com/get-data'
-    data = urlopen(url).read().decode()
+    url = 'https://secure-api.com/get-data'
+    context = ssl.create_default_context()  # Enforce SSL validation
+    data = urlopen(url, context=context).read().decode()
     return data
 
 def save_to_db(data):
