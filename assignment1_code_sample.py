@@ -46,7 +46,9 @@ def send_email(to, subject, body):
 def get_data():
     """
     Retrieves data from a secure API with HTTPS and SSL verification.
-    (A07: Identification and Authentication Failures)
+    Using an unencrypted HTTP connection can expose sensitive data to attackers through man-in-the-middle attacks.
+    SSL validation helps ensure the connection is secure.
+    (OWASP A07: Identification and Authentication Failures)
     """
     url = 'https://secure-api.com/get-data'  # Use HTTPS instead of HTTP
     context = ssl.create_default_context()  # Enforce SSL validation
