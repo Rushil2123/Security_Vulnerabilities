@@ -19,7 +19,9 @@ db_config = {
 def get_user_input():
     """
     Gets user input and validates it to prevent potential XSS or injection attacks.
-    (A05: Security Misconfiguration)
+    Without validation, attackers could inject malicious scripts or SQL commands.
+    Regular expressions help ensure only allowed characters are accepted.
+    (OWASP A05: Security Misconfiguration)
     """
     user_input = input('Enter your name: ')
     if not re.match("^[A-Za-z ]+$", user_input):  # Only allow letters and spaces
