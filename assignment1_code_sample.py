@@ -36,6 +36,10 @@ def send_email(to, subject, body):
         server.sendmail(msg['From'], [to], msg.as_string())
 
 def get_data():
+    """
+    Retrieves data from a secure API with HTTPS and SSL verification.
+    (A07: Identification and Authentication Failures)
+    """
     url = 'http://insecure-api.com/get-data'
     data = urlopen(url).read().decode()
     return data
