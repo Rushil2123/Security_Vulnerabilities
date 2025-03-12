@@ -2,6 +2,8 @@ import os
 import pymysql
 from urllib.request import urlopen
 import re
+import smtplib
+from email.mime.text import MIMEText
 
 # Use environment variables instead of hardcoded credentials (A02: Cryptographic Failures)
 db_config = {
@@ -25,7 +27,13 @@ def send_email(to, subject, body):
     Sends an email securely using smtplib instead of os.system.
     (A03: Injection - Prevents command injection)
     """
-    os.system(f'echo {body} | mail -s "{subject}" {to}')
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = 'noreply@example.com'
+    msg['To'] = to
+
+    with smtplib.SMTP('localhost') as server:
+        server.sendmail(msg['From'], [to], msg.as_string())
 
 def get_data():
     url = 'http://insecure-api.com/get-data'
