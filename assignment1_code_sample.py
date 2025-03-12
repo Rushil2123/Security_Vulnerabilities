@@ -4,9 +4,9 @@ from urllib.request import urlopen
 
 # Use environment variables instead of hardcoded credentials (A02: Cryptographic Failures)
 db_config = {
-    'host': 'mydatabase.com',
-    'user': 'admin',
-    'password': 'secret123'
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD')
 }
 
 def get_user_input():
