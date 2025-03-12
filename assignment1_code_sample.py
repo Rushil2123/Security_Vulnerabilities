@@ -1,6 +1,7 @@
 import os
 import pymysql
 from urllib.request import urlopen
+import re
 
 # Use environment variables instead of hardcoded credentials (A02: Cryptographic Failures)
 db_config = {
@@ -15,6 +16,8 @@ def get_user_input():
     (A05: Security Misconfiguration)
     """
     user_input = input('Enter your name: ')
+    if not re.match("^[A-Za-z ]+$", user_input):  # Allow only letters and spaces
+        raise ValueError("Invalid input: Only letters and spaces are allowed.")
     return user_input
 
 def send_email(to, subject, body):
