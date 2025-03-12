@@ -6,7 +6,10 @@ import ssl
 from urllib.request import urlopen
 from email.mime.text import MIMEText
 
-# Use environment variables instead of hardcoded credentials (A02: Cryptographic Failures)
+# Hardcoded credentials expose sensitive information and can be exploited if the source code is leaked.
+# Use environment variables instead of hardcoded credentials to manage them securely.
+# This helps prevent unauthorized access if the source code is compromised.
+# (OWASP A02: Cryptographic Failures)
 db_config = {
     'host': os.getenv('DB_HOST'),
     'user': os.getenv('DB_USER'),
