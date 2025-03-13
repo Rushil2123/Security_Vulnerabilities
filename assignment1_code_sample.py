@@ -79,13 +79,19 @@ def save_to_db(data):
     Parameterized queries prevent attackers from injecting malicious SQL statements.
     (OWASP A03: Injection - Prevents SQL Injection)
     """
-    connection = pymysql.connect(**db_config)
-    cursor = connection.cursor()
     query = "INSERT INTO mytable (column1, column2) VALUES (%s, %s)"
-    cursor.execute(query, (data, "Another Value"))  # Secure parameterized query
-    connection.commit()
-    cursor.close()
-    connection.close()
+    
+    try:
+        connection = pymysql.connect(**db_config)
+        with connection.cursor() as cursor:
+            cursor.execute(query, (data, "Another Value"))  # Secure parameterized query
+            connection.commit()
+        logging.info("Data successfully saved to database")
+    except pymysql.MySQLError as e:
+        logging.error("Database error: %s", e)
+    finally:
+        if 'connection' in locals() and connection.open:
+            connection.close()
 
 if __name__ == '__main__':
     user_input = get_user_input()
