@@ -62,8 +62,15 @@ def get_data():
     """
     url = 'https://secure-api.com/get-data'  # Use HTTPS instead of HTTP
     context = ssl.create_default_context()  # Enforce SSL validation
-    data = urlopen(url, context=context).read().decode()
-    return data
+
+    try:
+        with urlopen(url, context=context, timeout=5) as response:
+            data = response.read().decode()
+        logging.info("Data successfully fetched from API")
+        return data
+    except Exception as e:
+        logging.error("API request failed: %s", e)
+        return None
 
 def save_to_db(data):
     """
