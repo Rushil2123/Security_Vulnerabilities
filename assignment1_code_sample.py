@@ -5,6 +5,10 @@ import re
 import ssl
 from urllib.request import urlopen
 from email.mime.text import MIMEText
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Hardcoded credentials expose sensitive information and can be exploited if the source code is leaked.
 # Use environment variables instead of hardcoded credentials to manage them securely.
@@ -24,7 +28,7 @@ def get_user_input():
     (OWASP A05: Security Misconfiguration)
     """
     user_input = input('Enter your name: ')
-    if not re.match("^[A-Za-z ]+$", user_input):  # Only allow letters and spaces
+    if not re.fullmatch("^[A-Za-z ]+$", user_input):  # Only allow letters and spaces
         raise ValueError("Invalid input: Only letters and spaces are allowed.")
     return user_input
 
@@ -35,13 +39,19 @@ def send_email(to, subject, body):
     This method ensures safer handling of email transmission.
     (OWASP A03: Injection - Prevents command injection)
     """
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = 'noreply@example.com'
-    msg['To'] = to
-    
-    with smtplib.SMTP('localhost') as server:
-        server.sendmail(msg['From'], [to], msg.as_string())
+    try:
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = 'noreply@example.com'
+        msg['To'] = to
+
+        with smtplib.SMTP_SSL('smtp.example.com', 465) as server:  # Secure SMTP with SSL
+            server.login(os.getenv('EMAIL_USER'), os.getenv('EMAIL_PASS'))  # Secure authentication
+            server.sendmail(msg['From'], [to], msg.as_string())
+
+        logging.info("Email sent successfully to %s", to)
+    except Exception as e:
+        logging.error("Failed to send email: %s", e)
 
 def get_data():
     """
